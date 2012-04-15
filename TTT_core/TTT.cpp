@@ -20,9 +20,8 @@ void outputBoard();
 TTT_board board = TTT_board();
 
 // Valid commands which may be sent through stdin
-#define QUIT    "quit"
-#define MOVE    "move"
-#define CHECK   "check"
+#define QUIT    "quit"  // Immediately exit the program
+#define MOVE    "move"  // Attempt a move, format: "move PLAYER_ID xCoord yCoord"
 
 int main(int argc, char *argv[]) {
     #ifdef DEBUG
@@ -31,7 +30,15 @@ int main(int argc, char *argv[]) {
     DBGV_OUT( "TTT main: Executing in VERBOSE DEBUG mode." << endl );
     #endif
     
-    if (argc > 1) cerr << "TTT: this program does not take any command-line arguments." << endl;
+    if (argc > 1) {
+        // TODO: Display program help if appropriate
+        string arg1(argv[1]);
+        if (!arg1.compare("--help") || !arg1.compare("-help") || !arg1.compare("help")) {
+            cerr << "TTT: Help for this program is not complete yet." << endl;
+        }
+        else cerr << "TTT: this program does not take any command-line arguments except --help."<< endl;
+        cerr << "     Normal program operation continues:" << endl;
+    }
     inputLoop();
 }
 
@@ -49,14 +56,17 @@ void inputLoop() {
             for( int i=0; i<commandSize-1; i++) DBGV_OUT( command[i] << ", " );
             DBGV_OUT( command[commandSize-1] << endl );
             #endif
-            // Execute the command and if it is valid display the board state
-            if (execCommand( command )) {
+            // Execute the command
+            if (execCommand( command ))
                 DBGV_OUT( "TTT inputLoop: Command reported success: " << command[0] << endl );
-                outputBoard();
-            }
-            else DBG_OUT( "TTT inputLoop: Command failed: " << command[0] << endl );
+            else
+                DBG_OUT( "TTT inputLoop: Command failed: " << command[0] << endl );
         }
         else DBG_OUT( "TTT inputLoop: Invalid input." << endl );
+        
+        // Output the board state so any changes can be seen
+        DBGV_OUT( "TTT inputLoop: Displaying board." << endl );
+        outputBoard();
     }
 }
 
@@ -112,8 +122,6 @@ bool execCommand( vector<string>& command ) {
         DBG_OUT( "TTT execCommand: Moving with args " << player << ", " << x << ", " << y << endl );
         if (!board.attemptMove( player, x, y )) return false;
     }
-    // TODO: Output the state of a board space if CHECK is sent
-    else if (command[0] == CHECK);
     else {
         DBGV_OUT( "TTT execCommand: Command not valid: " << command[0] << endl );
         return false;
@@ -153,7 +161,14 @@ bool convertPlayerString( string playerString, PLAYER_ID& player ) {
 
 // Outputs the state of the board to stdout
 void outputBoard() {
-    
+    DBGV_OUT( "TTT outputBoard: Outputting board state on stdout." << endl );
+    // Display the player ID for each space
+    int x, y;
+    for ( x=0; x<3; x++ ) {
+        for (y=0; y<3; y++ )
+            cout << board.getBoardState(x, y);
+        cout << endl;
+    }
 }
 
 

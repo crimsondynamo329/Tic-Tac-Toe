@@ -15,6 +15,8 @@ public:
     bool attemptMove(PLAYER_ID player, int xCoord, int yCoord);
     // Read the board state at (xCoord,yCoord)
     PLAYER_ID getBoardState(int xCoord, int yCoord);
+    // Check for a winner
+    PLAYER_ID checkWinner();
 private:
     // The board is indexed with the top-left corner as (0,0) and the bottom-right (2,2)
     PLAYER_ID board[3][3];

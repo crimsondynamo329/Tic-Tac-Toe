@@ -60,6 +60,11 @@ PLAYER_ID TTT_board::getBoardState(int xCoord, int yCoord) {
     );
 }
 
+// TODO: Checks the board for a winner.  Returns the player ID of the winner or NONE.
+PLAYER_ID TTT_board::checkWinner() {
+    
+}
+
 // Checks coordinates and optionally a player ID for validity
 bool TTT_board::checkCoords(int xCoord, int yCoord, PLAYER_ID player) {
     if ( (xCoord < 0) || (xCoord > 2) ) return false;
