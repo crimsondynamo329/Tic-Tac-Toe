@@ -11,18 +11,17 @@ public:
     
     // Clear the board
     void clear();
-    // Attempt to make a move for 'player' at (xCoord,yCoord)
-    bool attemptMove(PLAYER_ID player, int xCoord, int yCoord);
-    // Read the board state at (xCoord,yCoord)
-    PLAYER_ID getBoardState(int xCoord, int yCoord);
+    // Attempt to make a move for 'player' at (rowCoord,colCoord)
+    bool attemptMove(PLAYER_ID player, int rowCoord, int colCoord);
+    // Read the board state at (rowCoord,colCoord)
+    PLAYER_ID getBoardState(int rowCoord, int colCoord);
     // Check for a winner
     PLAYER_ID checkWinner();
 private:
     // The board is indexed with the top-left corner as (0,0) and the bottom-right (2,2)
     PLAYER_ID board[3][3];
-    // Checks coordinates and optionally a player ID for validity
-    bool checkCoords(int xCoord, int yCoord);
-    bool checkCoords(int xCoord, int yCoord, PLAYER_ID player);
+    // Checks coordinates and a player ID for validity
+    bool checkCoords(int rowCoord, int colCoord, PLAYER_ID player);
 };
 
 #endif

@@ -12,7 +12,7 @@ using namespace std;
 void inputLoop();
 bool parseInput( string line, vector<string>& command );
 bool execCommand( vector<string>& command );
-bool convertCoordStrings( string xString, string yString, int& xCoord, int& yCoord );
+bool convertCoordStrings( string rowString, string colString, int& rowCoord, int& colCoord );
 bool convertPlayerString( string playerString, PLAYER_ID& player );
 void outputBoard();
 
@@ -21,7 +21,7 @@ TTT_board board = TTT_board();
 
 // Valid commands which may be sent through stdin
 #define QUIT    "quit"  // Immediately exit the program
-#define MOVE    "move"  // Attempt a move, format: "move PLAYER_ID xCoord yCoord"
+#define MOVE    "move"  // Attempt a move, format: "move PLAYER_ID rowCoord colCoord"
 
 int main(int argc, char *argv[]) {
     #ifdef DEBUG
@@ -31,7 +31,8 @@ int main(int argc, char *argv[]) {
     #endif
     
     if (argc > 1) {
-        // TODO: Display program help if appropriate
+        // Display program help if appropriate
+        #warning TODO: Complete program help
         string arg1(argv[1]);
         if (!arg1.compare("--help") || !arg1.compare("-help") || !arg1.compare("help")) {
             cerr << "TTT: Help for this program is not complete yet." << endl;
@@ -109,9 +110,9 @@ bool execCommand( vector<string>& command ) {
     else if (command[0] == MOVE) {
         if (command.size() < 4) return false; // TTT_board::attemptMove() requires 3 arguments
         // Convert the coordinate strings
-        int x, y;
+        int row, col;
         PLAYER_ID player;
-        if (!convertCoordStrings( command[2], command[3], x, y )) {
+        if (!convertCoordStrings( command[2], command[3], row, col )) {
             DBGV_OUT( "TTT execCommand: Move not attempted (bad coordinates)." << endl );
             return false;
         }
@@ -119,8 +120,8 @@ bool execCommand( vector<string>& command ) {
             DBGV_OUT( "TTT execCommand: Move not attempted (bad player ID)." << endl );
             return false;
         }
-        DBG_OUT( "TTT execCommand: Moving with args " << player << ", " << x << ", " << y << endl );
-        if (!board.attemptMove( player, x, y )) return false;
+        DBG_OUT( "TTT execCommand: Moving with args " << player << ", " << row << ", " << col << endl );
+        if (!board.attemptMove( player, row, col )) return false;
     }
     else {
         DBGV_OUT( "TTT execCommand: Command not valid: " << command[0] << endl );
@@ -131,18 +132,18 @@ bool execCommand( vector<string>& command ) {
     return true;
 }
 
-// Checks the validity of coordinates given by 'xString' and 'yString'.  Coordinates are valid if they
-//* are 0-2.  If they are valid, stores integer representations 'xCoord' and 'yCoord'.  If not,
-//* returns false and values of xCoord and yCoord may be invalid.
-bool convertCoordStrings( string xString, string yString, int& xCoord, int& yCoord ) {
+// Checks the validity of coordinates given by 'rowString' and 'colString'.  Coordinates are valid if they
+//* are 0-2.  If they are valid, stores integer representations 'rowCoord' and 'colCoord'.  If not,
+//* returns false and values of rowCoord and colCoord may be invalid.
+bool convertCoordStrings( string rowString, string colString, int& rowCoord, int& colCoord ) {
     // The strings should both be length 1
-    if ( (xString.length() != 1) || (yString.length() != 1) ) return false;
+    if ( (rowString.length() != 1) || (colString.length() != 1) ) return false;
     // Convert the first (and only) characters to integers
-    xCoord = xString.at(0) - '0';
-    yCoord = yString.at(0) - '0';
+    rowCoord = rowString.at(0) - '0';
+    colCoord = colString.at(0) - '0';
     // Check the integer values
-    if ( (xCoord < 0) || (xCoord > 2) ) return false;
-    if ( (yCoord < 0) || (yCoord > 2) ) return false;
+    if ( (rowCoord < 0) || (rowCoord > 2) ) return false;
+    if ( (colCoord < 0) || (colCoord > 2) ) return false;
     // If this point is reached, the values are valid
     return true;
 }
@@ -163,10 +164,22 @@ bool convertPlayerString( string playerString, PLAYER_ID& player ) {
 void outputBoard() {
     DBGV_OUT( "TTT outputBoard: Outputting board state on stdout." << endl );
     // Display the player ID for each space
-    int x, y;
-    for ( x=0; x<3; x++ ) {
-        for (y=0; y<3; y++ )
-            cout << board.getBoardState(x, y);
+    PLAYER_ID winner = board.checkWinner();
+    DBGV_OUT( "TTT outputBoard: Winner check result: " << winner << endl );
+    switch (winner) {
+    case PLAYER1:
+        cout << "Winner: PLAYER1" << endl;
+        break;
+    case PLAYER2:
+        cout << "Winner: PLAYER2" << endl;
+        break;
+    default:
+        break;
+    }
+    int row, col;
+    for ( row=0; row<3; row++ ) {
+        for (col=0; col<3; col++ )
+            cout << board.getBoardState(row, col);
         cout << endl;
     }
 }
