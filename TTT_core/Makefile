@@ -9,7 +9,7 @@ all: ${OBJ}
 
 #generate dependancy files at the same time as object compilation
 %.o : %.cpp
-	${CC} ${CXX_FLAGS} -MD -o $@ -c $< 
+	${CC} ${CXX_FLAGS} -MD -g -o $@ -c $< 
 	@cp $*.d $*.P; \
 	  sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
 	 	  -e '/^$$/ d' -e 's/$$/ :/' < $*.P >> $*.d; \

@@ -1,0 +1,20 @@
+Tic Tac Toe game usage
+
+Commands are sent to the game on stdin, and game output is displayed on stdout.  Error messages may appear on stderr.
+
+Moves are sent in the form "move player row col" where the values are as defined below:
+player: identifies the player who is making a move.  May be '1' or '2'.
+row, col: row and column position on the board for the move.  The top left corner is 0, 0 and the bottom right is 2, 2.  The board positions are shown below.
+    0,0|0,1|0,2
+    1,0|1,1|1,2
+    2,0|2,1|2,2
+After each move, the board state is displayed on stdout with empty spaces represented by '0' and occupied spaces represented by their player ID ('1' or '2').
+    If the argument --one-line is sent, the output will have all rows on the same line.  Otherwise, each row will be on its own line.
+
+Sending "winner" will check the board for a winner and output the player number of the winner.  0 will be displayed if there is no winner.
+
+The board can be cleared by sending "clear".  After the board is cleared, the board state is displayed as described above.
+
+The game is ended by sending "quit".
+
+If the command sent is not recognized, "ERROR" will be output.
