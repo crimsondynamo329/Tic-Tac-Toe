@@ -1,4 +1,4 @@
-SRC := $(wildcard *.cpp) #TTT.cpp TTT_board.cpp
+SRC := $(wildcard *.cpp)
 OBJ := ${SRC:.cpp=.o}
 LIBS := 
 CC := g++

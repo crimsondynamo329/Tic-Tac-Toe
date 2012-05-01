@@ -47,16 +47,17 @@ int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		// Display program help if appropriate
 		string arg1(argv[1]);
-		if (!arg1.compare("--help") || !arg1.compare("-help") || !arg1.compare("help"))
+		if (arg1 == "--help") {
 			displayHelp();
-		else if (!arg1.compare("--one-line"))
+			exit(0);
+		}
+		else if (arg1 == "--one-line")
 			oneLine = true;
 		else {
 			cerr << "TTT: unknown argument. Try --help."<< endl;
 			exit(1);
 		}
 	}
-	outputBoard();
 	inputLoop();
 }
 
@@ -125,7 +126,10 @@ bool parseInput( string line, vector<string>& command ) {
 bool execCommand( vector<string>& command ) {
 	// Check the first word to see if it is valid.  If it is, do the appropriate action.
 	// Terminate when QUIT is sent
-	if (command[0] == QUIT) exit(0);
+	if (command[0] == QUIT) {
+		cout << "Exiting" << endl;
+		exit(0);
+	}
 	// Attempt to assert a move if MOVE is sent
 	else if (command[0] == MOVE) {
 		if (command.size() < 4) return false; // TTT_board::attemptMove() requires 3 arguments
@@ -227,9 +231,23 @@ void outputWinner() {
 }
 
 void displayHelp() {
-	ifstream helpfile(HELPFILE);
+	// Get the directory of the executable
+	char dir[1024];
+	size_t len = readlink("/proc/self/exe", dir, sizeof(dir)-1);
+	if (len < 0) {
+		cerr << "Error: could not get executable directory" << endl;
+		exit(1);
+	}
+	dir[len] = '\0';
+	string filepath(dir);
+	// Remove the last part of the filename (the executable name)
+	filepath = filepath.substr(0, filepath.find_last_of("/\\")+1 );
+	// Add the helpfile name
+	filepath.append(HELPFILE);
+	// Display the file
+	ifstream helpfile(filepath.c_str());
 	if (!helpfile.is_open()) {
-		cerr << "Unable to open help file \"" << HELPFILE << "\"" << endl;
+		cerr << "Unable to open help file \"" << filepath << "\"" << endl;
 		return;
 	}
 	cout << helpfile.rdbuf() << endl;
