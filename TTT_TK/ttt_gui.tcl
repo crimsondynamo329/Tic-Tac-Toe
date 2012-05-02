@@ -6,8 +6,8 @@ wm geometry . 210x210+300+300
 canvas .can                                                                 
 
 #consumes a gif files and saves it to a variable 
-set cross [image create photo -file ./cross.gif]    
-set not [image create photo -file ./not.gif]
+set cross [image create photo -file ./TTT_TK/cross.gif]    
+set not [image create photo -file ./TTT_TK/not.gif]
 # Updates the GUI based on the following integer code values
 # 100 : places X in coordinate (0,0)
 # 101 : places X in coordinate (0,1)
