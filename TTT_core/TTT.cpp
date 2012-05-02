@@ -36,6 +36,8 @@ TTT_board board = TTT_board();
 
 // Indicates if output should be single-line or not
 bool oneLine = false;
+// Indicates if output should be GUI-formatted
+bool gui = false;
 
 int main(int argc, char *argv[]) {
 	#ifdef DEBUG
@@ -53,6 +55,8 @@ int main(int argc, char *argv[]) {
 		}
 		else if (arg1 == "--one-line")
 			oneLine = true;
+		else if (arg1 == "--gui")
+			gui = true;
 		else {
 			cerr << "TTT: unknown argument. Try --help."<< endl;
 			exit(1);
@@ -201,14 +205,24 @@ bool convertPlayerString( string playerString, PLAYER_ID& player ) {
 // Outputs the state of the board to stdout
 void outputBoard() {
 	DBGV_OUT( "TTT outputBoard: Outputting board state on stdout." << endl );
-	// Display the player ID for each space
 	int row, col;
-	for ( row=0; row<3; row++ ) {
-		for (col=0; col<3; col++ )
-			cout << board.getBoardState(row, col);
-		if (!oneLine) cout << endl;
+	if (gui) {
+		// Display output formatted for GUI application
+		for (row = 0; row < 3; row++) {
+			for (col = 0; col < 3; col++) {
+				printf("%d%d%d\n", (int)board.getBoardState(row, col), row, col);
+			}
+		}
 	}
-	if (oneLine) cout << endl;
+	else {
+		// Display the player ID for each space
+		for ( row=0; row<3; row++ ) {
+			for (col=0; col<3; col++ )
+				cout << board.getBoardState(row, col);
+			if (!oneLine) cout << endl;
+		}
+		if (oneLine) cout << endl;
+	}
 	
 }
 
