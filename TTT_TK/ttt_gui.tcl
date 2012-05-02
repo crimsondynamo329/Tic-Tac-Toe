@@ -125,21 +125,10 @@ proc updater {code} {
 .can create line 10 70 200 70   
 .can create line 10 140 200 140 
 pack .can
-
-##exec rm cpp_pipe
-#Makes a named pipe called cpp_pipe
-##exec mkfifo cpp_pipe  
-#opens the pipe as a read/write non-blocking                          
-##set fifo [open "cpp_pipe" {RDWR NONBLOCK}]
-#sets the pipe, in a way its only expecting one integer      
-#fconfigure $fifo -blocking 1 
-#Reads from fifo and calls the updater procedure                   
+                
 proc read_stdin {} {                           
-	#global fifo                     
-	##gets $fifo x
     gets stdin x
-    #puts $x  	
     updater $x
 }             
-#Connects the triggering of the named pipe to the read_fifo procedure                        
+#Connects the triggering of the stdin to the read_stdin procedure                        
 fileevent stdin readable read_stdin            
