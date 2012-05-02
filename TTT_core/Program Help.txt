@@ -10,6 +10,7 @@ row, col: row and column position on the board for the move.  The top left corne
     2,0|2,1|2,2
 After each move, the board state is displayed on stdout with empty spaces represented by '0' and occupied spaces represented by their player ID ('1' or '2').
     If the argument --one-line is sent, the output will have all rows on the same line.  Otherwise, each row will be on its own line.
+    The --gui argument is used by the GUI interface to the program and should not be used when playing from the command line.
 
 Sending "winner" will check the board for a winner and output the player number of the winner.  0 will be displayed if there is no winner.
 
