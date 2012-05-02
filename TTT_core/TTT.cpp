@@ -161,9 +161,11 @@ bool execCommand( vector<string>& command ) {
 	}
 	else if (command[0] == CLEAR) {
 		DBGV_OUT( "TTT execCommand: Clearing the board" << endl );
-		// Clear the board and output the clear board
 		board.clear();
-		outputBoard();
+		if (gui) // Output the clear code for the GUI
+			cout << "30" << endl;
+		else // Output the newly cleared board
+			outputBoard();
 	}
 	else {
 		DBGV_OUT( "TTT execCommand: Command not valid: " << command[0] << endl );
@@ -213,6 +215,8 @@ void outputBoard() {
 				printf("%d%d%d\n", (int)board.getBoardState(row, col), row, col);
 			}
 		}
+		// Display the result of a winner check
+		outputWinner();
 	}
 	else {
 		// Display the player ID for each space
