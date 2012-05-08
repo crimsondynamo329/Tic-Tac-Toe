@@ -238,9 +238,11 @@ void outputWinner() {
 	switch (winner) {
 	case PLAYER1:
 		cout << PLAYER1_str << endl;
+		cerr << "Winner: Player " << PLAYER1_str << endl;
 		break;
 	case PLAYER2:
 		cout << PLAYER2_str << endl;
+		cerr << "Winner: Player " << PLAYER2_str << endl;
 		break;
 	case NONE:
 		cout << NONE_str << endl;
